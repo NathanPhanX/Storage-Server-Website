@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1">
+    <title>Email Verification</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <style>
+        body {
+            background: url({{ url_for ('static', filename = 'background.jpg') }});
+            background-image: {{ url_for('static', filename='background.jpg') }};
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        img{
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            position: absolute;
+            top: -75px;
+            left: calc(50% - 75px);
+        }
+    </style>
+
+    <div class='boxed'>
+        <img src="{{ url_for('static', filename='brand.jpg') }}">
+        <h4 style="color: red; text-align: center">Verification code has been sent to your email</h4>
+
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            {{ form.code.label() }}
+            {{ form.code() }}
+
+            <div class="security">
+                {{ form.security() }}
+            </div>
+
+            {{ form.submit() }}
+        </form>
+
+        <div class="error">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+
+</body>
+</html>

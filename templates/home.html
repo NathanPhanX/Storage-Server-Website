@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <style>
+        body {
+            background: url({{ url_for ('static', filename = 'background.jpg') }});
+            background-image: {{ url_for('static', filename='background.jpg') }};
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            font-family: 'Arial";
+            margin: 0;
+            padding: 0;
+        }
+
+        form{
+            display:inline;
+        }
+
+        input:focus{
+            outline: none;
+        }
+
+        .head{
+            transform: translate(0%, -50%);
+            width: 100%;
+        }
+
+        .nav{
+            background-color: #ff523b;
+            color: white;
+            list-style: none;
+            text-align: center;
+            width: 100%;
+            padding: 20px 0 20px 0;
+        }
+
+        .nav > li {
+            display: inline-block;
+            padding-right: 50px;
+        }
+
+        .nav > li > a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav > li > a:hover {
+            color: #c1c1c1;
+        }
+
+        .header_txt {
+            color: black;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .head_image{
+            width: 150px;
+            height: 150px;
+            padding: 20px;
+            border-radius: 50%;
+            transform: translate(200%, 0%);
+        }
+
+        .image{
+            width: 150px;
+            height: 150px;
+            padding: 20px;
+        }
+
+        .image:hover{
+            opacity: 0.3;
+        }
+
+        .row{
+            overflow-y: scroll;
+            width: 985px;
+            height: 750px;
+            margin: 0 auto;
+            background-color: black;
+        }
+    </style>
+
+    <div class="head">
+        <ul class="nav">
+            <li> <a href="/home/upload_images"> Upload Images </a> </li>
+            <li> <a href="/home/download_images" onclick="alert('All images are sent to your email')"> Download Images </a> </li>
+            <li> <a href="/home/clear_images" onclick="alert('All images are deleted')"> Delete All Images </a> </li>
+            <li> <a href="/home/change_email"> Change Email </a> </li>
+            <li> <a href="/home/change_password"> Change Password </a> </li>
+            <li> <a href="logout"> Logout </a> </li>
+        </ul>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" style="text-align: center; color: red">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h1 class="header_txt">MEMORIES</h1>
+
+    <div class="row">
+        <img src="brand.jpg" class="head_image">
+        {% for sub_path in path %}
+            <div class="column">
+                {% for img in sub_path %}
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                        <input type="image" src="{{ img }}" class="image" onclick="alert('Image deleted')" />
+                        <input name="id" type="hidden" value={{img}} />
+                    </form>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

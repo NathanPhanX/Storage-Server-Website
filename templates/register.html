@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <style>
+        body {
+            background: url({{ url_for ('static', filename = 'background.jpg') }});
+            background-image: {{ url_for('static', filename='background.jpg') }};
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        img{
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            position: absolute;
+            top: -75px;
+            left: calc(50% - 75px);
+        }
+    </style>
+
+    <div class='boxed' style="height: 630px;">
+        <img src="{{ url_for('static', filename='brand.jpg') }}">
+
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            {{ form.email.label() }}:
+            {{ form.email() }}
+
+            {{ form.password.label() }}:
+            {{ form.password() }}
+
+            {{ form.password_conf.label() }}:
+            {{ form.password_conf() }}
+
+            {{ form.code.label() }}:
+            {{ form.code() }}
+
+            <div class="security">
+                {{ form.security() }}
+            </div>
+
+            {{ form.submit() }}
+        </form>
+
+        <div class="error">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <br>
+            {% if form.email.errors %}
+                {% for error in form.email.errors %}
+                    {{ error }}
+                {% endfor %}
+            {% endif %}
+
+            <br>
+            {% if form.password.errors %}
+                {% for error in form.password.errors %}
+                    {{ error }}
+                {% endfor %}
+            {% endif %}
+
+            <br>
+            {% if form.password_conf.errors %}
+                {% for error in form.password_conf.errors %}
+                    {{ error }}
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <br>
+        <a href="{{ url_for('login') }}">Have an Account?</a>
+    </div>
+
+</body>
+</html>
